@@ -2,7 +2,7 @@ public class DadosAluno {
 
     int codigo;
     String nome;
-    int telefone;
+    long telefone;
     String email;
     float G1;
     float G2;
@@ -10,13 +10,13 @@ public class DadosAluno {
 
     @Override
     public String toString() {
-        return "DadosAluno{" +
-                "codigo=" + codigo +
-                ", nome='" + nome + '\'' +
-                ", telefone=" + telefone +
-                ", email='" + email + '\'' +
-                ", G1=" + G1 +
-                ", G2=" + G2 +
-                '}';
+        return "Aluno (" +
+                "Codigo: " + codigo +
+                ", Nome: " + nome +
+                ", Telefone: " + telefone +
+                ", Email: " + email +
+                ", G1: " + G1 +
+                ", G2: " + G2 +
+                ')';
     }
 }
