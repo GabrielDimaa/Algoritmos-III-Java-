@@ -193,7 +193,7 @@ public class FuncaoLista {
             }
 
             System.out.println("Aluno não encontrado!");
-            System.out.println("Deseja procurar novamente? ");
+            System.out.println("Deseja procurar novamente? (S/N)");
             resp = tc.next().toUpperCase().charAt(0);
 
         } while (resp == 'S');
@@ -219,17 +219,20 @@ public class FuncaoLista {
             System.out.println("Digite o nome do aluno: ");
             nomeAluno = tc.next().toUpperCase();
 
-            for (int i = 0; i < (registro1.TamanhoLista + 1); i++) {
+            for (int i=0; i<(registro1.TamanhoLista + 1); i++) {
 
                 if (registro1.lista[i].nome.toUpperCase().equals(nomeAluno)) {
                     System.out.println(registro1.lista[i]);
                     break;
                 }
 
+                else if (i == (registro1.TamanhoLista - 1)) {
+                    System.out.println("Aluno não encontrado!");
+                }
+
             }
 
-            System.out.println("Aluno não encontrado!");
-            System.out.println("Deseja procurar novamente? ");
+            System.out.println("Deseja procurar novamente? (S/N)");
             resp = tc.next().toUpperCase().charAt(0);
 
         } while (resp == 'S');
@@ -310,7 +313,7 @@ public class FuncaoLista {
             }
 
             System.out.println("Código não encontrado!");
-            System.out.println("Deseja procurar novamente? ");
+            System.out.println("Deseja procurar novamente? (S/N)");
             resp = tc.next().toUpperCase().charAt(0);
 
         } while (resp == 'S');
