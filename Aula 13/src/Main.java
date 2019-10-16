@@ -1,16 +1,38 @@
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        String agencia = new String(), aux;
-        int sorteio;
+        Scanner tc = new Scanner(System.in);
 
-        for (int i=0; i<4; i++) {
-            sorteio = (int) (Math.random() * 9);
-            aux = Integer.toString(sorteio);
-            agencia = agencia + aux;
-        }
-        System.out.println(agencia);
+        Lista lista = new Lista();
+        lista.quant = 0;
+        int escolha;
+
+        do {
+            System.out.println("1 - Criar conta");
+            System.out.println("2 - Escolher conta");
+            System.out.println("3 - Sair");
+            escolha = tc.nextInt();
+            switch (escolha) {
+
+                case 1:
+                    Metodos.addCliente(lista);
+                    break;
+
+                case 2:
+                    Metodos.escolherConta(lista);
+                    break;
+
+                case 3:
+                    System.out.println("Programa encerrado!");
+                    break;
+
+            }
+
+        } while (escolha != 3);
+
     }
 
 }
