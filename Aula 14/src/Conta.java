@@ -1,3 +1,4 @@
+import javax.swing.plaf.SeparatorUI;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -40,153 +41,130 @@ public class Conta {
         System.out.println("Seu saldo = R$ " + saldo);
     }
 
-    public void depositar() {
-        float deposito;
-        System.out.println("Valor do depósito: ");
-        deposito = tc.nextFloat();
-        saldo = saldo + deposito;
-        verSaldo();
-    }
-
-    public void sacar() {
-        float saque, aux, aux1;
-        System.out.println("Valor do saque: ");
-        saque = tc.nextFloat();
-        if (saque > saldo) {
-            aux = saldo - saque;
-            while (aux < limite) {
-                aux = 0;
-                if (limiteUsado == 0) {
-                    System.out.println("Você não não tem mais limite!");
-                    break;
-                }
-                else {
-                    System.out.println("Você não tem limite para esse saque!");
-                    System.out.println("Seu limite é: R$" + (limiteUsado * -1));
-                    System.out.println("Valor do saque: ");
-                    saque = tc.nextFloat();
-                    aux = saldo - saque;
-                }
+    public void depositar(float valor) {
+        float aux;
+        if (limiteUsado < limite) {
+            if (valor > (saldo*1)) {
+                saldo = saldo + valor;
+                limiteUsado = valor - saldo;
             }
-            saldo = aux;
-            if (saldo < 0) {
-                aux = 0 - saque;
+            else {
+                saldo = saldo + valor;
+                limiteUsado = limiteUsado + valor;
             }
-            aux1 = limiteUsado - aux;
-            limiteUsado = aux1;
         }
         else {
-            saldo = saldo - saque;
+            saldo = saldo + valor;
         }
+    }
 
-        verSaldo();
+    public float sacar() {
+        float saque;
+
+        float saldo;
+        if (this.saldo < 0) {
+            saldo = limiteUsado;
+        }
+        else {
+            saldo = this.saldo + limiteUsado;
+        }
+        System.out.println("Valor: ");
+        saque = tc.nextFloat();
+        while (saque > saldo) {
+            System.out.println("Você não tem limite para isso!");
+            System.out.println("Seu limite é R$" + this.limiteUsado);
+            if (limiteUsado <= 0) {
+                return (0);
+            }
+            System.out.println("Valor: ");
+            saque = tc.nextFloat();
+        }
+        if (saque > this.saldo) {
+            this.limiteUsado = saldo - saque;
+            this.saldo = this.saldo - saque;
+        }
+        else {
+            this.saldo = this.saldo - saque;
+        }
+        return (saque);
     }
 
     public void extrato() {
-        if (limiteUsado != limite) {
-            System.out.println("Extrato: " + (limite - limiteUsado));
-        }
-        else {
-            System.out.println("Extrato: " + (saldo + (limite * -1)));
-        }
+        System.out.println("Extrato: " + (saldo + limite));
     }
 
     public void transferir(ArrayList<Conta> banco) {
         boolean valida;
+        float valor;
         String nome;
         String cpf;
         String agencia;
         String numConta;
         String senha;
-        float valor, aux, aux1;
 
-        System.out.println("Valor da transferência: ");
-        valor = tc.nextFloat();
-        if (valor > saldo) {
-            aux = saldo - valor;
-            while (aux < limite) {
-                aux = 0;
-                if (limiteUsado == 0) {
-                    System.out.println("Você não não tem mais limite!");
-                    break;
-                }
-                else {
-                    System.out.println("Você não tem limite para esse saque!");
-                    System.out.println("Seu limite é: R$" + (limiteUsado * -1));
-                    System.out.println("Valor da transferência: ");
-                    valor = tc.nextFloat();
-                    aux = saldo - valor;
-                }
-            }
-            saldo = aux;
-            if (saldo < 0) {
-                aux = 0 - valor;
-            }
-            aux1 = limiteUsado - aux;
-            limiteUsado = aux1;
+        valor = sacar();
+
+        if (valor == 0) {
+            System.out.println("Tranferência concluída!");
         }
         else {
-            saldo = saldo - valor;
-        }
-
-
-        System.out.println("CPF (Com '.' e '-'): ");
-        cpf = tc.nextLine();
-        valida = Metodos.validaCpf(cpf);
-        while (valida == false) {
-            System.out.println("CPF incorreto! ");
             System.out.println("CPF (Com '.' e '-'): ");
             cpf = tc.nextLine();
             valida = Metodos.validaCpf(cpf);
-        }
+            while (valida == false) {
+                System.out.println("CPF incorreto! ");
+                System.out.println("CPF (Com '.' e '-'): ");
+                cpf = tc.nextLine();
+                valida = Metodos.validaCpf(cpf);
+            }
 
-        System.out.println("Nome do titular: ");
-        nome = tc.nextLine();
+            System.out.println("Nome do titular: ");
+            nome = tc.nextLine();
 
-        System.out.println("Agência: ");
-        agencia = tc.nextLine();
+            System.out.println("Agência: ");
+            agencia = tc.nextLine();
 
-        System.out.println("Número da conta: ");
-        numConta = tc.nextLine();
+            System.out.println("Número da conta: ");
+            numConta = tc.nextLine();
 
-        Conta dadoAux;
-        boolean validaTransf = false;
+            Conta dadoAux;
+            boolean validaTransf = false;
 
-        for (Conta x : banco){
-            if (x.pessoa.nome.toUpperCase().equals(nome.toUpperCase()) && x.pessoa.cpf.
-                    equals(cpf) && x.agencia.equals(agencia) && x.numConta.equals(numConta)) {
+            for (Conta x : banco) {
+                if (x.pessoa.nome.toUpperCase().equals(nome.toUpperCase()) && x.pessoa.cpf.
+                        equals(cpf) && x.agencia.equals(agencia) && x.numConta.equals(numConta)) {
 
-                dadoAux = x;
+                    dadoAux = x;
 
-                dadoAux.saldo = dadoAux.saldo + valor;
+                    dadoAux.depositar(valor);
 
-                System.out.println("Digite sua senha: ");
-                senha = tc.nextLine();
-                if (!senha.equals(this.senha)) {
-                    for (int i=0; i<3; i++) {
-                        System.out.println("Senha incorreta (tentativa " + i+1 + "/3");
-                        System.out.println("Digite novamente: ");
-                        senha = tc.nextLine();
-                        if (senha.equals(this.senha)) {
-                            System.out.println("Tranferência concluída!");
-                            break;
+                    System.out.println("Digite sua senha: ");
+                    senha = tc.nextLine();
+                    if (!senha.equals(this.senha)) {
+                        for (int i = 0; i < 3; i++) {
+                            System.out.println("Senha incorreta (tentativa " + i + 1 + "/3");
+                            System.out.println("Digite novamente: ");
+                            senha = tc.nextLine();
+                            if (senha.equals(this.senha)) {
+                                System.out.println("Tranferência concluída!");
+                                break;
+                            }
                         }
+                    } else {
+                        System.out.println("Tranferência concluída!");
+                        validaTransf = true;
                     }
+                    break;
+
                 }
-                else {
-                    System.out.println("Tranferência concluída!");
-                    validaTransf = true;
-                }
-                break;
 
             }
 
-        }
+            if (validaTransf == false) {
+                System.out.println("Conta não encontrada!");
+            }
 
-        if (validaTransf == false) {
-            System.out.println("Conta não encontrada!");
         }
-
     }
 
 //Override para comparação do equals

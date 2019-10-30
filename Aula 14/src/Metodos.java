@@ -102,7 +102,9 @@ public class Metodos {
                             break;
 
                         case 2:
-                            dadoAux.depositar();
+                            System.out.println("Valor do depósito: ");
+                            float deposito = tc.nextFloat();
+                            dadoAux.depositar(deposito);
                             break;
 
                         case 3:
@@ -166,7 +168,8 @@ public class Metodos {
                 dadoAux.senha = criarSenha();
                 System.out.println("Senha salva");
 
-                dadoAux.limite = limite(dadoAux.pessoa.idade);
+                dadoAux.limiteUsado = limite(dadoAux.pessoa.idade);
+                dadoAux.limite = dadoAux.limiteUsado;
 
                 System.out.println("Dados atualizados!");
 
@@ -257,11 +260,11 @@ public class Metodos {
     public static float limite(int idade) {
         float valorLimite;
         if (idade > 60) {
-            valorLimite = -1000;
+            valorLimite = 1000;
         } else if (idade < 18 && idade >= 16) {
-            valorLimite = -100;
+            valorLimite = 100;
         } else {
-            valorLimite = -300;
+            valorLimite = 300;
         }
         return (valorLimite);
     }
