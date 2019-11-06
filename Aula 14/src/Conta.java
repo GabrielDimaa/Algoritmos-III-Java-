@@ -1,4 +1,3 @@
-import javax.swing.plaf.SeparatorUI;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ public class Conta {
     public String senha;
     public float saldo;
     public float limite;
-    public float limiteUsado;
+    public float limiteDisponivel;
 
 //Construtor
 
@@ -42,16 +41,9 @@ public class Conta {
     }
 
     public void depositar(float valor) {
-        float aux;
-        if (limiteUsado < limite) {
-            if (valor > (saldo*1)) {
-                saldo = saldo + valor;
-                limiteUsado = valor - saldo;
-            }
-            else {
-                saldo = saldo + valor;
-                limiteUsado = limiteUsado + valor;
-            }
+        if (saldo < 0) {
+            saldo = valor + saldo;
+            limiteDisponivel = limiteDisponivel + (valor - saldo);
         }
         else {
             saldo = saldo + valor;
@@ -63,24 +55,24 @@ public class Conta {
 
         float saldo;
         if (this.saldo < 0) {
-            saldo = limiteUsado;
+            saldo = limiteDisponivel;
         }
         else {
-            saldo = this.saldo + limiteUsado;
+            saldo = this.saldo + limiteDisponivel;
         }
         System.out.println("Valor: ");
         saque = tc.nextFloat();
         while (saque > saldo) {
             System.out.println("Você não tem limite para isso!");
-            System.out.println("Seu limite é R$" + this.limiteUsado);
-            if (limiteUsado <= 0) {
+            System.out.println("Seu limite é R$" + this.limiteDisponivel);
+            if (limiteDisponivel <= 0) {
                 return (0);
             }
             System.out.println("Valor: ");
             saque = tc.nextFloat();
         }
         if (saque > this.saldo) {
-            this.limiteUsado = saldo - saque;
+            this.limiteDisponivel = saldo - saque;
             this.saldo = this.saldo - saque;
         }
         else {
@@ -90,11 +82,10 @@ public class Conta {
     }
 
     public void extrato() {
-        System.out.println("Extrato: " + (saldo + limite));
+        System.out.println("Extrato: " + (saldo + limiteDisponivel));
     }
 
     public void transferir(ArrayList<Conta> banco) {
-        boolean valida;
         float valor;
         String nome;
         String cpf;
@@ -108,15 +99,8 @@ public class Conta {
             System.out.println("Tranferência concluída!");
         }
         else {
-            System.out.println("CPF (Com '.' e '-'): ");
+            System.out.println("CPF: ");
             cpf = tc.nextLine();
-            valida = Metodos.validaCpf(cpf);
-            while (valida == false) {
-                System.out.println("CPF incorreto! ");
-                System.out.println("CPF (Com '.' e '-'): ");
-                cpf = tc.nextLine();
-                valida = Metodos.validaCpf(cpf);
-            }
 
             System.out.println("Nome do titular: ");
             nome = tc.nextLine();
