@@ -23,6 +23,18 @@ public class Metodos {
 
     }
 
+    public void imprimirDados(Aluno imprime) {
+
+        System.out.println("--------------------");
+        System.out.println("Nome: " + imprime.nome);
+        System.out.println("Código: " + imprime.codigo);
+        System.out.println("Telefone: " + imprime.telefone);
+        System.out.println("Email: " + imprime.email);
+        System.out.println("Nota G1: " + imprime.g1);
+        System.out.println("Nota G2: " + imprime.g2);
+
+    }
+
     public void addFinal(Lista lista) {
 
         Aluno novoContato;
@@ -110,7 +122,7 @@ public class Metodos {
         nome = tc.next();
 
         aux = lista.primeiro;
-        while (aux.elo != null) {
+        while (aux != null) {
             if (nome.toUpperCase().equals(aux.nome.toUpperCase())) {
                 novoAluno = criarAluno();
                 novoAluno.elo = aux.elo;
@@ -142,15 +154,9 @@ public class Metodos {
         nome = tc.next();
 
         aux = lista.primeiro;
-        while (aux.elo != null) {
+        while (aux != null) {
             if (nome.toUpperCase().equals(aux.nome.toUpperCase())) {
-                System.out.println("--------------------");
-                System.out.println("Nome: " + aux.nome);
-                System.out.println("Código: " + aux.codigo);
-                System.out.println("Telefone: " + aux.telefone);
-                System.out.println("Email: " + aux.email);
-                System.out.println("Nota G1: " + aux.g1);
-                System.out.println("Nota G2: " + aux.g2);
+                imprimirDados(aux);
                 System.out.println("Média das notas: " + aux.media);
                 System.out.println("--------------------");
                 break;
@@ -209,10 +215,8 @@ public class Metodos {
 
         Aluno aux;
         int codigo;
-
         System.out.println("Excluir por código");
-        System.out.println("Código: ");
-        codigo = tc.nextInt();
+        codigo = Utils.validaNumero("Código: ");
 
         aux = lista.primeiro;
         if (codigo == aux.codigo) {
@@ -245,18 +249,16 @@ public class Metodos {
     public void listarRegistros(Lista lista) {
 
         Aluno percorreLista = lista.primeiro;
+        System.out.println("Numero de Registros " + lista.quantidade);
 
-        while (percorreLista.elo != null) {
-            System.out.println("--------------------");
-            System.out.println("Nome: " + percorreLista.nome);
-            System.out.println("Código: " + percorreLista.codigo);
-            System.out.println("Telefone: " + percorreLista.telefone);
-            System.out.println("Email: " + percorreLista.email);
-            System.out.println("Nota G1: " + percorreLista.g1);
-            System.out.println("Nota G2: " + percorreLista.g2);
-            System.out.println("--------------------");
-
-            percorreLista = percorreLista.elo;
+        if (percorreLista.elo == null) {
+            imprimirDados(percorreLista);
+        }
+        else {
+            while (percorreLista != null) {
+                imprimirDados(percorreLista);
+                percorreLista = percorreLista.elo;
+            }
         }
 
     }
@@ -265,18 +267,18 @@ public class Metodos {
 
         Aluno percorreLista = lista.primeiro;
 
-        while (percorreLista.elo != null) {
-            System.out.println("--------------------");
-            System.out.println("Nome: " + percorreLista.nome);
-            System.out.println("Código: " + percorreLista.codigo);
-            System.out.println("Telefone: " + percorreLista.telefone);
-            System.out.println("Email: " + percorreLista.email);
-            System.out.println("Nota G1: " + percorreLista.g1);
-            System.out.println("Nota G2: " + percorreLista.g2);
+        if (percorreLista.elo == null) {
+            imprimirDados(percorreLista);
             System.out.println("Média das notas: " + percorreLista.media);
-            System.out.println("--------------------");
+        }
+        else {
+            while (percorreLista != null) {
+                imprimirDados(percorreLista);
+                System.out.println("Média das notas: " + percorreLista.media);
+                System.out.println("--------------------");
 
-            percorreLista = percorreLista.elo;
+                percorreLista = percorreLista.elo;
+            }
         }
 
     }

@@ -10,7 +10,7 @@ public class Utils {
         while (valida != true) {
             System.out.println(frase);
             try {
-                numero = Integer.parseInt(tc.nextLine());
+                numero = Integer.parseInt(tc.next());
                 return (numero);
             } catch (NumberFormatException e) {
                 System.out.println("Por favor, digite apenas números!");
